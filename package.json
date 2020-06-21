@@ -1,0 +1,15 @@
+{
+  "name": "chef",
+  "version": "1.0.0",
+  "description": "",
+  "main": "chef.js",
+  "scripts": {
+    "test": "node run.js ip.txt",
+    "debug": "node run.js --inspect=0.0.0.0:56770"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "lodash": "^4.17.15"
+  }
+}
