@@ -24,7 +24,7 @@ chef.perform = async (fileName) => {
   const carbRegex = /^CARB/;
   let searchFlag = 'BOTH';
   const nutrientHash = _.reduce(ingredients, (acc, ingredient) => {
-    // console.log('ingredient', ingredient);
+    // console.log('acc => ', acc);
     if (fatRegex.test(ingredient)){
       acc.count['FAT'] += 1;
       acc.availableIng.push('FAT');
@@ -41,7 +41,7 @@ chef.perform = async (fileName) => {
         resultString += 'X';
         searchFlag = 'Y';
         acc.count['FAT'] -= 2;
-        acc.count['FIBER'] -= 2;
+        // acc.count['FIBER'] -= 2;
         chef.removeXDishIngredeints(acc.availableIng, acc.count);
         return acc;
       }
