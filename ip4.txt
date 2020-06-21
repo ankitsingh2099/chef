@@ -1,0 +1,2 @@
+16
+CARBWheat CARBQuinoa CARBOat FATOil FIBERSpinach CARBRice FATCheese FIBERBeans FATEgg FIBERBroccoli CARBPotato CARBCorn FATOlive FIBERCarrot CARBBeetroot FIBERBanana
