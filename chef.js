@@ -1,13 +1,13 @@
 const fs = require('fs');
-const _ = require('lodash'); 
+const _ = require('lodash');
 const chef = {};
-  
-// Use fs.readFile() method to read the file 
+
+// Use fs.readFile() method to read the file
 
 
 chef.readFile = async (fileName) => {
   return new Promise((resolve, reject) => {
-    fs.readFile(fileName, 'utf8', function(err, data){ 
+    fs.readFile(fileName, 'utf8', function(err, data){
       const ipData = data.split('\n');
       const ingredients = ipData[1].split(' ');
       resolve({ingredients});
@@ -42,7 +42,7 @@ chef.perform = async (fileName) => {
         searchFlag = 'Y';
         acc.count['FAT'] -= 2;
         acc.count['FIBER'] -= 2;
-        chef.removeXDishIngredeints(acc.availableIng);
+        chef.removeXDishIngredeints(acc.availableIng, acc.count);
         return acc;
       }
       if (chef.isYDishPossible(acc.count)){
@@ -63,8 +63,8 @@ chef.perform = async (fileName) => {
         searchFlag = 'Y';
         // remove first 2 fat and first 2 fiber
         acc.count['FAT'] -= 2;
-        acc.count['FIBER'] -= 2;
-        chef.removeXDishIngredeints(acc.availableIng);
+        //acc.count['FIBER'] -= 2;
+        chef.removeXDishIngredeints(acc.availableIng, acc.count);
         return acc;
       }
       resultString += '-';
@@ -89,7 +89,9 @@ chef.perform = async (fileName) => {
 };
 
 chef.isXDishPossible = (nutrientObj) => {
-  return (nutrientObj['FAT'] >= 2 && nutrientObj['FIBER'] >= 2) 
+  return ((nutrientObj['FAT'] >= 2 && nutrientObj['FIBER'] >= 2)
+    ||(nutrientObj['FAT'] >= 3 && nutrientObj['FIBER'] >= 1)
+    ||(nutrientObj['FAT'] >= 4))
 }
 
 chef.isYDishPossible = (nutrientObj) => {
@@ -99,11 +101,16 @@ chef.isYDishPossible = (nutrientObj) => {
     ||(nutrientObj['CARB'] >= 1 && nutrientObj['FIBER'] >= 3))
 }
 
-chef.removeXDishIngredeints = (ingredientsArray) => {
+chef.removeXDishIngredeints = (ingredientsArray, count) => {
   chef.removeIng(ingredientsArray, 'FAT');
   chef.removeIng(ingredientsArray, 'FAT');
-  chef.removeIng(ingredientsArray, 'FIBER');
-  chef.removeIng(ingredientsArray, 'FIBER');
+
+  const idx = _.findIndex(ingredientsArray, (element) => (element !== 'CARB'));
+  count[ingredientsArray[idx]] -= 1;
+  ingredientsArray.splice(idx,1);
+  const idx1 = _.findIndex(ingredientsArray, (element) => (element !== 'CARB'));
+  count[ingredientsArray[idx1]] -= 1;
+  ingredientsArray.splice(idx1,1);
 }
 
 chef.removeYDishIngredeints = (ingredientsArray, count) => {
